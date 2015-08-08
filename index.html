@@ -39,10 +39,16 @@
         .data(data)
         .enter()
         .append('circle')
+          .call(dots)
+
+      function dots (selection) {
+        selection
           .attr('cx', function (d) {return d.x})
           .attr('cy',height/2)
           .attr('r',height/10)
           .attr('fill', function (d) {return d.color})
+      }
+
     </script>
 
   </body>
