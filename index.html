@@ -54,6 +54,11 @@
         return d.color == favor ? height/6 : height/10
       }
 
+      d3.selectAll('input[name="favor"').on('click', function () {
+        svg.selectAll('circle').transition()
+          .call(dots)
+      })
+
     </script>
 
   </body>
