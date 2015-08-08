@@ -10,11 +10,24 @@
 
       <h1> Spray Dots </h1>
 
+      <div class="viz"></div>
+
       <div style="width:300px; text-align:left;">
         We will explore painting things that move
         with dots that struggle to be in the best
         place but avoid overlapping other dots.
       </div>
+
+    </center>
+
+    <script>
+      var width = 900, height = 400
+      var svg = d3.select('.viz')
+        .append('svg')
+          .attr('width',width)
+          .attr('height',height)
+          .style('border',"1px solid #ddd")
+    </script>
 
   </body>
 </html>
