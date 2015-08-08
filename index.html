@@ -45,8 +45,13 @@
         selection
           .attr('cx', function (d) {return d.x})
           .attr('cy',height/2)
-          .attr('r',height/10)
+          .attr('r',radius)
           .attr('fill', function (d) {return d.color})
+      }
+
+      function radius (d) {
+        var favor = d3.select('input[name="favor"]:checked').node().value
+        return d.color == favor ? height/6 : height/10
       }
 
     </script>
