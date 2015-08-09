@@ -33,9 +33,9 @@
       var force = d3.layout.force()
         .nodes(data)
         .size([width, height])
-        .gravity(.3) // .1 default
-        .friction(.7) // .9 default
-        .charge(-90) // -30 default
+        .gravity(0) // .1 default
+        .friction(.9) // .9 default
+        .charge(-30) // -30 default
         .on("tick", tick)
         .start()
 
@@ -70,12 +70,18 @@
       })
 
       function tick (e) {
-        var delta = 50 * e.alpha // .1 alpha default and decreasing
-        data.forEach(function(d, i) {
-          d.x += d.color=='blue' ? -delta : delta;
-        });
         svg.selectAll('circle')
+          .each(gravity(.3 * e.alpha))
           .call(dots)
+      }
+
+      function gravity(alpha) {
+        var y = height/2
+        return function(d) {
+          var x = d.color == 'blue' ? width/4 : width*3/4
+          d.y += (y - d.y) * alpha
+          d.x += (x - d.x) * alpha
+        }
       }
 
     </script>
