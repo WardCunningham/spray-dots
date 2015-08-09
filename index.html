@@ -49,6 +49,7 @@
         .enter()
         .append('circle')
           .call(dots)
+          .call(force.drag)
 
       function dots (selection) {
         selection
