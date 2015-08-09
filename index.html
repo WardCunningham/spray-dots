@@ -33,6 +33,7 @@
       var force = d3.layout.force()
         .nodes(data)
         .size([width, height])
+        .gravity(.3) // .1 default
         .on("tick", tick)
         .start()
 
