@@ -70,6 +70,10 @@
       })
 
       function tick (e) {
+        var delta = 50 * e.alpha // .1 alpha default and decreasing
+        data.forEach(function(d, i) {
+          d.x += d.color=='blue' ? -delta : delta;
+        });
         svg.selectAll('circle')
           .call(dots)
       }
