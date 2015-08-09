@@ -26,10 +26,21 @@
 
     <script>
       var width = 900, height = 400
-      var data = [
-        {color: 'blue', x: width/4},
-        {color: 'red', x: width*3/4}
-      ]
+      var scatter = d3.random.normal(0,height/20)
+      var data = []
+      d3.range(25).map(function () {
+        data.push({
+          color: 'blue',
+          x: width/4 + scatter(),
+          y: height/2 + scatter()
+        })
+        data.push({
+          color: 'red',
+          x: width*3/4 + scatter(),
+          y: height/2 + scatter()
+        })
+      })
+
       var svg = d3.select('.viz')
         .append('svg')
           .attr('width',width)
@@ -44,14 +55,14 @@
       function dots (selection) {
         selection
           .attr('cx', function (d) {return d.x})
-          .attr('cy',height/2)
+          .attr('cy', function (d) {return d.y})
           .attr('r',radius)
           .attr('fill', function (d) {return d.color})
       }
 
       function radius (d) {
         var favor = d3.select('input[name="favor"]:checked').node().value
-        return d.color == favor ? height/6 : height/10
+        return d.color == favor ? height/30 : height/50
       }
 
       d3.selectAll('input[name="favor"').on('click', function () {
