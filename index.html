@@ -29,6 +29,13 @@
     <script>
       var width = 900, height = 400
       var data = fabricate({scatter: height/20})
+
+      var force = d3.layout.force()
+        .nodes(data)
+        .size([width, height])
+        .on("tick", tick)
+        .start()
+
       var svg = d3.select('.viz')
         .append('svg')
           .attr('width',width)
@@ -57,6 +64,11 @@
         svg.selectAll('circle').transition()
           .call(dots)
       })
+
+      function tick (e) {
+        svg.selectAll('circle')
+          .call(dots)
+      }
 
     </script>
 
