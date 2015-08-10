@@ -65,7 +65,8 @@
       }
 
       d3.selectAll('input[name="favor"').on('click', function () {
-        svg.selectAll('circle').transition()
+        force.resume()
+        svg.selectAll('circle')
           .call(dots)
       })
 
