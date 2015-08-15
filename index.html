@@ -117,6 +117,18 @@
         }
       }
 
+      function any (array) {
+        return array[Math.floor(Math.random() * array.length)]
+      }
+
+      function change () {
+        any(data).cluster = any(['left','right'])
+        force.resume()
+      }
+
+      setInterval(change,100)
+
+
     </script>
 
   </body>
