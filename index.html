@@ -123,7 +123,7 @@
 
       function change () {
         any(data).cluster = any(['left','right'])
-        force.resume()
+        force.alpha(.02) // .1 default
       }
 
       setInterval(change,100)
