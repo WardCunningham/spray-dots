@@ -30,19 +30,11 @@
     <script>
       var width = 900, height = 400
       var data = fabricate({scatter: height/20})
-      var spray = sprayChart({height: height, width: width})
+      var spray = sprayChart({height: height, width: width, radius: radius})
 
       d3.select('.viz')
         .datum(data)
         .call(spray)
-
-      function dots (selection) {
-        selection
-          .attr('cx', function (d) {return d.x})
-          .attr('cy', function (d) {return d.y})
-          .attr('r',radius)
-          .attr('fill', function (d) {return d.color})
-      }
 
       function radius (d) {
         var favor = d3.select('input[name="favor"]:checked').node().value
@@ -52,46 +44,6 @@
       d3.selectAll('input[name="favor"').on('click', function () {
         spray.resume()
       })
-
-      function gravity(alpha) {
-        var y = height/2
-        return function(d) {
-          var x = d.cluster == 'left' ? width/4 : width*3/4
-          d.y += (y - d.y) * alpha
-          d.x += (x - d.x) * alpha
-        }
-      }
-
-      function collide(alpha) {
-        var quadtree = d3.geom.quadtree(data)
-        var padding = 2
-        return function(d) {
-          var r = radius(d) + padding,
-              nx1 = d.x - r,
-              nx2 = d.x + r,
-              ny1 = d.y - r,
-              ny2 = d.y + r
-          quadtree.visit(function(quad, x1, y1, x2, y2) {
-            if (quad.point && (quad.point !== d)) {
-              var x = d.x - quad.point.x,
-                  y = d.y - quad.point.y,
-                  l = Math.sqrt(x * x + y * y),
-                  r = radius(d) + radius(quad.point) + padding
-              if (l < r) {
-                l = (l - r) / l * alpha;
-                d.x -= x *= l;
-                d.y -= y *= l;
-                quad.point.x += x
-                quad.point.y += y
-              }
-            }
-            return x1 > nx2
-                || x2 < nx1
-                || y1 > ny2
-                || y2 < ny1
-          })
-        }
-      }
 
       function any (array) {
         return array[Math.floor(Math.random() * array.length)]
