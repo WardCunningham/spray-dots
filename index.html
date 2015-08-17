@@ -60,7 +60,10 @@
       }
 
       function change () {
-        any(data).cluster = any(eval(value('lean')))
+        var favor = value('favor')
+        var mobile = data.filter(function (d) {return d.color == favor})
+        var choice = data.concat(mobile,mobile,mobile)
+        any(choice).cluster = any(eval(value('lean')))
         spray.alpha(.02) // .1 default
       }
 
