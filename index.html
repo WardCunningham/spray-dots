@@ -6,6 +6,7 @@
     <link rel="icon" href="./favicon.png">
     <script src="./node_modules/d3/d3.js"></script>
     <script src="./fabricate.js"></script>
+    <script src="./spray.js"></script>
   </head>
   <body>
     <center>
@@ -29,27 +30,11 @@
     <script>
       var width = 900, height = 400
       var data = fabricate({scatter: height/20})
+      var spray = sprayChart({height: height, width: width})
 
-      var force = d3.layout.force()
-        .nodes(data)
-        .size([width, height])
-        .gravity(0) // .1 default
-        .friction(.9) // .9 default
-        .charge(0) // -30 default
-        .on("tick", tick)
-        .start()
-
-      var svg = d3.select('.viz')
-        .append('svg')
-          .attr('width',width)
-          .attr('height',height)
-          .style('border',"1px solid #ddd")
-      svg.selectAll('circle')
-        .data(data)
-        .enter()
-        .append('circle')
-          .call(dots)
-          .call(force.drag)
+      d3.select('.viz')
+        .datum(data)
+        .call(spray)
 
       function dots (selection) {
         selection
@@ -65,17 +50,8 @@
       }
 
       d3.selectAll('input[name="favor"').on('click', function () {
-        force.resume()
-        svg.selectAll('circle')
-          .call(dots)
+        spray.resume()
       })
-
-      function tick (e) {
-        svg.selectAll('circle')
-          .each(gravity(.3 * e.alpha))
-          .each(collide(.5))
-          .call(dots)
-      }
 
       function gravity(alpha) {
         var y = height/2
@@ -123,7 +99,7 @@
 
       function change () {
         any(data).cluster = any(['left','right'])
-        force.alpha(.02) // .1 default
+        spray.alpha(.02) // .1 default
       }
 
       setInterval(change,100)
