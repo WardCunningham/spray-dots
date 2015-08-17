@@ -41,12 +41,17 @@
         .datum(data)
         .call(spray)
 
+      function value(name) {
+        var selector = 'input[name="' + name + '"]:checked'
+        return d3.select(selector).node().value
+      }
+
       function radius (d) {
-        var favor = d3.select('input[name="favor"]:checked').node().value
+        var favor = value('favor')
         return d.color == favor ? height/30 : height/50
       }
 
-      d3.selectAll('input[name="favor"').on('click', function () {
+      d3.selectAll('input').on('click', function () {
         spray.resume()
       })
 
@@ -55,7 +60,7 @@
       }
 
       function change () {
-        any(data).cluster = any(['left','right'])
+        any(data).cluster = any(eval(value('lean')))
         spray.alpha(.02) // .1 default
       }
 
