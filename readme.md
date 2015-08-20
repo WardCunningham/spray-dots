@@ -1,4 +1,6 @@
 # Spray Dots
+
+[![Join the chat at https://gitter.im/WardCunningham/spray-dots](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/WardCunningham/spray-dots?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 We explore painting things that move with dots that follow.
 We use placement and motion in the plane to represent abstract concepts 
 rather than precise motion in the domain.
