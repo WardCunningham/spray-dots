@@ -12,15 +12,7 @@
     <center>
 
       <h1> Spray Dots </h1>
-      favor:
-        <input type=radio name='favor' value='blue'>blue</input>
-        <input type=radio name='favor' value='none' checked>none</input>
-        <input type=radio name='favor' value='red'>red</input>
-      <br>
-      lean:
-        <input type=radio name='lean' value="left">left</input>
-        <input type=radio name='lean' value="none" checked>none</input>
-        <input type=radio name='lean' value="right">right</input>
+      <span class="date"></span>
 
       <div class="viz"></div>
 
@@ -35,10 +27,19 @@
     <script>
       var width = 900, height = 400
       var data = fabricate({scatter: height/20})
-      var none = data.map(copy)
-      var left = lean(none.map(copy), 'left', 200)
-      var right = lean(none.map(copy), 'right', 200)
+      var vers = versions(data)
       var spray = sprayChart({height: height, width: width, radius: radius, friction: .3})
+
+      d3.select('.date').selectAll('label')
+        .data(Object.keys(vers))
+        .enter()
+        .append('label')
+          .text(String)
+        .append('input')
+          .attr('type','radio')
+          .attr('name','date')
+          .attr('value',String)
+          .property('checked', function (d,i) {return i == 0})
 
       var viz = d3.select('.viz')
         .datum(data)
@@ -50,12 +51,12 @@
       }
 
       function radius (d) {
-        var favor = value('favor')
+        var favor = 'none'
         return d.color == favor ? height/30 : height/50
       }
 
       d3.selectAll('input').on('click', function () {
-        var lean = eval(value('lean'))
+        var lean = vers[value('date')]
         for (var i=0; i<data.length; i++) {
           data[i].color = lean[i].color
           data[i].cluster = lean[i].cluster

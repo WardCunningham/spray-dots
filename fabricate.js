@@ -39,3 +39,13 @@ function lean (choice, leaning, count) {
 function copy(dot) {
   return {color: dot.color, cluster: dot.cluster}
 }
+
+function versions(data) {
+  var dates = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct']
+  var vers = {}
+  dates.forEach(function (date) {
+    vers[date] = data.map(copy)
+    data = lean(data.map(copy), 'left', 5)
+  })
+  return vers
+}
