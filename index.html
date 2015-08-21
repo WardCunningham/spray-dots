@@ -55,15 +55,9 @@
         spray.resume()
       })
 
-      function any (array) {
-        return array[Math.floor(Math.random() * array.length)]
-      }
-
       function change () {
-        var favor = value('favor')
-        var mobile = data.filter(function (d) {return d.color == favor})
-        var choice = data.concat(mobile,mobile,mobile)
-        any(choice).cluster = any(eval(value('lean')))
+        var choice = favor(data, value('favor'))
+        lean(choice, eval(value('lean')), 1)
         spray.alpha(.02) // .1 default
       }
 
