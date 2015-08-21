@@ -25,7 +25,12 @@ function favor (data, favor) {
 }
 
 function lean (choice, leaning, count) {
+  var weights = {
+    left: ['left','left','right'],
+    none: ['left','right'],
+    right: ['left','right','right']
+  }
   for (var i=0; i<count; i++) {
-    any(choice).cluster = any(leaning)
+    any(choice).cluster = any(weights[leaning])
   }
 }

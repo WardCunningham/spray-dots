@@ -18,9 +18,9 @@
         <input type=radio name='favor' value='red'>red</input>
       <br>
       lean:
-        <input type=radio name='lean' value="['left','left','right']">left</input>
-        <input type=radio name='lean' value="['left','right']" checked>none</input>
-        <input type=radio name='lean' value="['left','right','right']">right</input>
+        <input type=radio name='lean' value="left">left</input>
+        <input type=radio name='lean' value="none" checked>none</input>
+        <input type=radio name='lean' value="right">right</input>
 
       <div class="viz"></div>
 
@@ -57,7 +57,7 @@
 
       function change () {
         var choice = favor(data, value('favor'))
-        lean(choice, eval(value('lean')), 1)
+        lean(choice, value('lean'), 1)
         spray.alpha(.02) // .1 default
       }
 
