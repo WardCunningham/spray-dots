@@ -7,6 +7,7 @@
     <script src="./node_modules/d3/d3.js"></script>
     <script src="./fabricate.js"></script>
     <script src="./spray.js"></script>
+    <script src="./choices.js"></script>
   </head>
   <body>
     <center>
@@ -28,18 +29,12 @@
       var width = 900, height = 400
       var data = fabricate({scatter: height/20})
       var vers = versions(data)
+      var choices = radioChoices({})
       var spray = sprayChart({height: height, width: width, radius: radius, friction: .3})
 
-      d3.select('.date').selectAll('label')
-        .data(Object.keys(vers))
-        .enter()
-        .append('label')
-          .text(String)
-        .append('input')
-          .attr('type','radio')
-          .attr('name','date')
-          .attr('value',String)
-          .property('checked', function (d,i) {return i == 0})
+      d3.select('.date')
+        .datum(Object.keys(vers))
+        .call(choices)
 
       var viz = d3.select('.viz')
         .datum(data)
