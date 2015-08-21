@@ -55,8 +55,13 @@
       }
 
       d3.selectAll('input').on('click', function () {
+        var lean = eval(value('lean'))
+        for (var i=0; i<data.length; i++) {
+          data[i].color = lean[i].color
+          data[i].cluster = lean[i].cluster
+        }
         viz
-          .datum(eval(value('lean')))
+          .datum(data)
           .call(spray)
       })
 
