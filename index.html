@@ -35,9 +35,12 @@
     <script>
       var width = 900, height = 400
       var data = fabricate({scatter: height/20})
+      var none = data.map(copy)
+      var left = lean(none.map(copy), 'left', 200)
+      var right = lean(none.map(copy), 'right', 200)
       var spray = sprayChart({height: height, width: width, radius: radius})
 
-      d3.select('.viz')
+      var viz = d3.select('.viz')
         .datum(data)
         .call(spray)
 
@@ -52,17 +55,10 @@
       }
 
       d3.selectAll('input').on('click', function () {
-        spray.resume()
+        viz
+          .datum(eval(value('lean')))
+          .call(spray)
       })
-
-      function change () {
-        var choice = favor(data, value('favor'))
-        lean(choice, value('lean'), 1)
-        spray.alpha(.02) // .1 default
-      }
-
-      setInterval(change,100)
-
 
     </script>
 

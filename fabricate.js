@@ -33,4 +33,9 @@ function lean (choice, leaning, count) {
   for (var i=0; i<count; i++) {
     any(choice).cluster = any(weights[leaning])
   }
+  return choice
+}
+
+function copy(dot) {
+  return {color: dot.color, cluster: dot.cluster}
 }
