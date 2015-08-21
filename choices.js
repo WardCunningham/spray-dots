@@ -1,5 +1,6 @@
 
 function radioChoices (opt) {
+  var click = opt.click || function () {}
 
   function choices (selection) {
     selection.each(function (data) {
@@ -14,6 +15,7 @@ function radioChoices (opt) {
           .attr('name','date')
           .attr('value',String)
           .property('checked', function (d,i) {return i == 0})
+          .on('click.choice', function (d) {click(d)})
 
     })
   }

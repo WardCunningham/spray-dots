@@ -29,7 +29,7 @@
       var width = 900, height = 400
       var data = fabricate({scatter: height/20})
       var vers = versions(data)
-      var choices = radioChoices({})
+      var choices = radioChoices({click: change})
       var spray = sprayChart({height: height, width: width, radius: radius, friction: .3})
 
       d3.select('.date')
@@ -49,8 +49,8 @@
         return d.swing ? height/40 : height/50
       }
 
-      d3.selectAll('input').on('click', function () {
-        var lean = vers[value('date')]
+      function change (date) {
+        var lean = vers[date]
         for (var i=0; i<data.length; i++) {
           data[i].color = lean[i].color
           data[i].cluster = lean[i].cluster
@@ -59,7 +59,7 @@
         viz
           .datum(data)
           .call(spray)
-      })
+      }
 
     </script>
 
