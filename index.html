@@ -38,7 +38,7 @@
       var none = data.map(copy)
       var left = lean(none.map(copy), 'left', 200)
       var right = lean(none.map(copy), 'right', 200)
-      var spray = sprayChart({height: height, width: width, radius: radius})
+      var spray = sprayChart({height: height, width: width, radius: radius, friction: .3})
 
       var viz = d3.select('.viz')
         .datum(data)

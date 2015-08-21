@@ -13,7 +13,7 @@ function sprayChart (opt) {
         .nodes(data)
         .size([width, height])
         .gravity(0) // .1 default
-        .friction(.9) // .9 default
+        .friction(opt.friction || .9)
         .charge(0) // -30 default
         .on("tick", tick)
         .start()
