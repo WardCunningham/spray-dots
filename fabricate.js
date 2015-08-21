@@ -3,10 +3,12 @@ function fabricate (opt) {
 
   d3.range(25).map(function () {
     data.push({
+      swing: false,
       color: 'blue',
       cluster: 'left'
     })
     data.push({
+      swing: false,
       color: 'red',
       cluster: 'right'
     })
@@ -31,13 +33,18 @@ function lean (choice, leaning, count) {
     right: ['left','right','right']
   }
   for (var i=0; i<count; i++) {
-    any(choice).cluster = any(weights[leaning])
+    var chosen = any(choice)
+    var lean = any(weights[leaning])
+    if (chosen.cluster != lean) {
+      chosen.cluster = lean
+      chosen.swing = true      
+    }
   }
   return choice
 }
 
 function copy(dot) {
-  return {color: dot.color, cluster: dot.cluster}
+  return {color: dot.color, cluster: dot.cluster, swing: dot.swing}
 }
 
 function versions(data) {
