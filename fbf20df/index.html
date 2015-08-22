@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title> Spray Dots -- For painting things in motion </title>
+    <link rel="icon" href="./favicon.png">
+    <script src="./node_modules/d3/d3.js"></script>
+    <script src="./fabricate.js"></script>
+    <script src="./spray.js"></script>
+  </head>
+  <body>
+    <center>
+
+      <h1> Spray Dots </h1>
+      favor:
+        <input type=radio name='favor' value='blue'>blue</input>
+        <input type=radio name='favor' value='none' checked>none</input>
+        <input type=radio name='favor' value='red'>red</input>
+      <br>
+      lean:
+        <input type=radio name='lean' value="['left','left','right']">left</input>
+        <input type=radio name='lean' value="['left','right']" checked>none</input>
+        <input type=radio name='lean' value="['left','right','right']">right</input>
+
+      <div class="viz"></div>
+
+      <div style="width:300px; text-align:left;">
+        We will explore painting things that move
+        with dots that struggle to be in the best
+        place but avoid overlapping other dots.
+      </div>
+
+    </center>
+
+    <script>
+      var width = 900, height = 400
+      var data = fabricate({scatter: height/20})
+      var spray = sprayChart({height: height, width: width, radius: radius})
+
+      d3.select('.viz')
+        .datum(data)
+        .call(spray)
+
+      function value(name) {
+        var selector = 'input[name="' + name + '"]:checked'
+        return d3.select(selector).node().value
+      }
+
+      function radius (d) {
+        var favor = value('favor')
+        return d.color == favor ? height/30 : height/50
+      }
+
+      d3.selectAll('input').on('click', function () {
+        spray.resume()
+      })
+
+      function any (array) {
+        return array[Math.floor(Math.random() * array.length)]
+      }
+
+      function change () {
+        var favor = value('favor')
+        var mobile = data.filter(function (d) {return d.color == favor})
+        var choice = data.concat(mobile,mobile,mobile)
+        any(choice).cluster = any(eval(value('lean')))
+        spray.alpha(.02) // .1 default
+      }
+
+      setInterval(change,100)
+
+
+    </script>
+
+  </body>
+</html>

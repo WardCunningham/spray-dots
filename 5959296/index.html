@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title> Spray Dots -- For painting things in motion </title>
+    <link rel="icon" href="./favicon.png">
+    <script src="./node_modules/d3/d3.js"></script>
+    <script src="./fabricate.js"></script>
+  </head>
+  <body>
+    <center>
+
+      <h1> Spray Dots </h1>
+      favor:
+        <input type=radio name='favor' value='blue'>blue</input>
+        <input type=radio name='favor' value='none' checked>none</input>
+        <input type=radio name='favor' value='red'>red</input>
+
+      <div class="viz"></div>
+
+      <div style="width:300px; text-align:left;">
+        We will explore painting things that move
+        with dots that struggle to be in the best
+        place but avoid overlapping other dots.
+      </div>
+
+    </center>
+
+    <script>
+      var width = 900, height = 400
+      var data = fabricate({scatter: height/20})
+
+      var force = d3.layout.force()
+        .nodes(data)
+        .size([width, height])
+        .gravity(0) // .1 default
+        .friction(.9) // .9 default
+        .charge(0) // -30 default
+        .on("tick", tick)
+        .start()
+
+      var svg = d3.select('.viz')
+        .append('svg')
+          .attr('width',width)
+          .attr('height',height)
+          .style('border',"1px solid #ddd")
+      svg.selectAll('circle')
+        .data(data)
+        .enter()
+        .append('circle')
+          .call(dots)
+          .call(force.drag)
+
+      function dots (selection) {
+        selection
+          .attr('cx', function (d) {return d.x})
+          .attr('cy', function (d) {return d.y})
+          .attr('r',radius)
+          .attr('fill', function (d) {return d.color})
+      }
+
+      function radius (d) {
+        var favor = d3.select('input[name="favor"]:checked').node().value
+        return d.color == favor ? height/30 : height/50
+      }
+
+      d3.selectAll('input[name="favor"').on('click', function () {
+        force.resume()
+        svg.selectAll('circle')
+          .call(dots)
+      })
+
+      function tick (e) {
+        svg.selectAll('circle')
+          .each(gravity(.3 * e.alpha))
+          .each(collide(.5))
+          .call(dots)
+      }
+
+      function gravity(alpha) {
+        var y = height/2
+        return function(d) {
+          var x = d.color == 'blue' ? width/4 : width*3/4
+          d.y += (y - d.y) * alpha
+          d.x += (x - d.x) * alpha
+        }
+      }
+
+      function collide(alpha) {
+        var quadtree = d3.geom.quadtree(data)
+        var padding = 2
+        return function(d) {
+          var r = radius(d) + padding,
+              nx1 = d.x - r,
+              nx2 = d.x + r,
+              ny1 = d.y - r,
+              ny2 = d.y + r
+          quadtree.visit(function(quad, x1, y1, x2, y2) {
+            if (quad.point && (quad.point !== d)) {
+              var x = d.x - quad.point.x,
+                  y = d.y - quad.point.y,
+                  l = Math.sqrt(x * x + y * y),
+                  r = radius(d) + radius(quad.point) + padding
+              if (l < r) {
+                l = (l - r) / l * alpha;
+                d.x -= x *= l;
+                d.y -= y *= l;
+                quad.point.x += x
+                quad.point.y += y
+              }
+            }
+            return x1 > nx2
+                || x2 < nx1
+                || y1 > ny2
+                || y2 < ny1
+          })
+        }
+      }
+
+    </script>
+
+  </body>
+</html>
