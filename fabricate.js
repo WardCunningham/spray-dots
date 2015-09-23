@@ -5,12 +5,16 @@ function fabricate (opt) {
     data.push({
       swing: false,
       color: 'blue',
-      cluster: 'left'
+      cluster: 'left',
+      x: width / 4,
+      y: height / 2
     })
     data.push({
       swing: false,
       color: 'red',
-      cluster: 'right'
+      cluster: 'right',
+      x: width * 3 / 4,
+      y: height / 2
     })
   })
 

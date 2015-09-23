@@ -5,6 +5,7 @@
     <title> Spray Dots -- For painting things in motion </title>
     <link rel="icon" href="./favicon.png">
     <script src="./node_modules/d3/d3.js"></script>
+    <script src="./node_modules/react/dist/react.js"></script>
     <script src="./fabricate.js"></script>
     <script src="./spray.js"></script>
     <script src="./choices.js"></script>
@@ -30,15 +31,16 @@
       var data = fabricate({scatter: height/20})
       var vers = versions(data)
       var choices = radioChoices({click: change})
-      var spray = sprayChart({height: height, width: width, radius: radius, friction: .3})
 
       d3.select('.date')
         .datum(Object.keys(vers))
         .call(choices)
 
-      var viz = d3.select('.viz')
-        .datum(data)
-        .call(spray)
+      React.renderComponent(chart({
+        data: data,
+        height: height,
+        width: width
+      }), document.querySelector('.viz'))
 
       function value(name) {
         var selector = 'input[name="' + name + '"]:checked'
